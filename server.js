@@ -7,7 +7,7 @@ const User = require("./models/User");
 // const router = require("./auth/Route");
 
 const PORT = 3001;
-const dbURI = "mongodb+srv://marek:VZDYlNMaJNCHt3UX@tasks.meef8sd.mongodb.net/task-four?retryWrites=true&w=majority";
+const dbURI = "mongodb://marek:x1SBE4ExVDRkkqSE@ac-wzwslyr-shard-00-00.cy2d2qt.mongodb.net:27017,ac-wzwslyr-shard-00-01.cy2d2qt.mongodb.net:27017,ac-wzwslyr-shard-00-02.cy2d2qt.mongodb.net:27017/task-four?ssl=true&replicaSet=atlas-4yg0mt-shard-0&authSource=admin&retryWrites=true&w=majority";
 mongoose.connect(dbURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
