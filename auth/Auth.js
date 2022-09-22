@@ -1,12 +1,12 @@
 const User = require("../models/User");
 
 exports.register = async (req, res) => {
-    const { name, mail, password } = req.body;
+    const { name, email, password } = req.body;
     const now = new Date();
     try {
         await User.create({
             name: name,
-            mail: mail,
+            email: email,
             password: password,
             registered: now,
             lastLogged: now
@@ -18,8 +18,8 @@ exports.register = async (req, res) => {
         })
     } catch(err) {
         res.status(401).json({
-            message: "User not created",
-            error: error.message,
+            message: "Konto już istnieje",
+            error: console.log(err)
         })
     }
 } 
