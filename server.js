@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
-const { register } = require("./auth/Auth");
+const { register, deleteUser, blockUser, activateUser } = require("./auth/Auth");
 const User = require("./models/User");
 const cors = require("cors");
 // const router = require("./auth/Route");
@@ -19,6 +19,9 @@ mongoose.connect(dbURI, {
     .catch((err) => console.log(err));
 
 app.post("/register", register);
+app.delete("/delete", deleteUser);
+app.put("/block", blockUser);
+app.put("/activate", activateUser);
 
 app.get("/users", (req, res) => {
     User.find()
@@ -26,7 +29,7 @@ app.get("/users", (req, res) => {
             res.send(result);
         })
         .catch((err) => {
-            console.log(err);
+            res.send(err);
         })
 })
 
