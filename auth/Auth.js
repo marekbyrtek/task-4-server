@@ -8,8 +8,8 @@ exports.register = async (req, res) => {
             name: name,
             email: email,
             password: password,
-            registered: `${now.getDate()}-${now.getMonth()}-${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
-            lastLogged: `${now.getDate()}-${now.getMonth()}-${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`
+            registered: `${now.getHours()}:${now.getMinutes()} ${now.getDate()}-${now.getMonth()}-${now.getFullYear()}`,
+            lastLogged: `${now.getHours()}:${now.getMinutes()} ${now.getDate()}-${now.getMonth()}-${now.getFullYear()}`
         }).then(user => {
             res.status(200).json({
                 message: "User created",
@@ -25,10 +25,12 @@ exports.register = async (req, res) => {
 }
 
 exports.deleteUser = async (req, res) => {
-    const { _id } = req.body;
+    const { id } = req.body;
     try {
-        await User.findById(_id)
-        .then((user) => user.remove())
+        await User.findById(id)
+        .then((user) => {
+            user.remove()
+        })
         .then((user) => {
             res.status(201).json({
                 message: "User deleted",
@@ -44,13 +46,13 @@ exports.deleteUser = async (req, res) => {
 }
 
 exports.blockUser = async (req, res) => {
-    const { _id, status } = req.body;
+    const { id, status } = req.body;
     if (status === false) {
         res.status(400).json({message: "User already blocked"})
         return;
     }
     try {
-        await User.findById(_id)
+        await User.findById(id)
         .then((user) => {
             user.status = false;
             user.save((err) => {
@@ -76,13 +78,13 @@ exports.blockUser = async (req, res) => {
 }
 
 exports.activateUser = async (req, res) => {
-    const { _id, status } = req.body;
+    const { id, status } = req.body;
     if (status === true) {
         res.status(400).json({message: "User already active"})
         return;
     }
     try {
-        await User.findById(_id)
+        await User.findById(id)
         .then((user) => {
             user.status = true;
             user.save((err) => {

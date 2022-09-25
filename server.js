@@ -19,7 +19,7 @@ mongoose.connect(dbURI, {
     .catch((err) => console.log(err));
 
 app.post("/register", register);
-app.delete("/delete", deleteUser);
+app.post("/delete", deleteUser);
 app.put("/block", blockUser);
 app.put("/activate", activateUser);
 
