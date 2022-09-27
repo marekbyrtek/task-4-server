@@ -9,7 +9,7 @@ const cors = require("cors");
 
 app.use(cors());
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const dbURI = "mongodb://marek:x1SBE4ExVDRkkqSE@ac-wzwslyr-shard-00-00.cy2d2qt.mongodb.net:27017,ac-wzwslyr-shard-00-01.cy2d2qt.mongodb.net:27017,ac-wzwslyr-shard-00-02.cy2d2qt.mongodb.net:27017/task-four?ssl=true&replicaSet=atlas-4yg0mt-shard-0&authSource=admin&retryWrites=true&w=majority";
 mongoose.connect(dbURI, {
     useNewUrlParser: true,
