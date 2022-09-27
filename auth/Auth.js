@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
                     message: "User blocked",
                     error: "User is not active"
                 })
-            } {
+            } else {
                 user.lastLogged = `${now.getHours()}:${now.getMinutes()} ${now.getDate()}-${now.getMonth()}-${now.getFullYear()}`;
                 const accessToken = jwt.sign({id: user._id, email: user.email}, "mySecretKey");
                 user.save();
