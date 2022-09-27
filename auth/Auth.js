@@ -1,4 +1,20 @@
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+
+exports.verify = (req, res, next) => {
+    const checkAccessToken = req.header("accessToken");
+    if (checkAccessToken) {
+        jwt.verify(checkAccessToken, "mySecretKey", (err, user) => {
+            if (err) {
+                return res.status(403).json("Token is not valid");
+            }
+            req.user = user;
+            next();
+        })
+    } else {
+        res.status(401).json("You are not authenticated");
+    }
+}
 
 exports.register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -19,6 +35,41 @@ exports.register = async (req, res) => {
     } catch(err) {
         res.status(401).json({
             message: "Account already exist",
+            error: console.log(err)
+        })
+    }
+}
+
+exports.login = async (req, res) => {
+    const { email, password } = req.body;
+    const now = new Date();
+    try {
+        await User.findOne({ email, password })
+        .then((user) => {
+            if (!user) {
+                res.status(401).json({
+                    message: "Login not successful",
+                    error: "Email or password is wrong"
+                });
+            } else if (user.status == false) {
+                res.status(401).json({
+                    message: "User blocked",
+                    error: "User is not active"
+                })
+            } {
+                user.lastLogged = `${now.getHours()}:${now.getMinutes()} ${now.getDate()}-${now.getMonth()}-${now.getFullYear()}`;
+                const accessToken = jwt.sign({id: user._id, email: user.email}, "mySecretKey");
+                user.save();
+                res.status(200).json({
+                    token: accessToken,
+                    message: "Login successful",
+                    user
+                })
+            }
+        })
+    } catch(err) {
+        res.status(400).json({
+            message: "Login not successful",
             error: console.log(err)
         })
     }

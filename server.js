@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
-const { register, deleteUser, blockUser, activateUser } = require("./auth/Auth");
+const { register, deleteUser, blockUser, activateUser, login, verify } = require("./auth/Auth");
 const User = require("./models/User");
 const cors = require("cors");
 // const router = require("./auth/Route");
@@ -22,6 +22,14 @@ app.post("/register", register);
 app.post("/delete", deleteUser);
 app.put("/block", blockUser);
 app.put("/activate", activateUser);
+app.post("/login", login);
+app.get("/auth", verify, (req, res) => {
+    const user = req.user;
+    res.status(200).json({
+        message: "Działa",
+        user
+    })
+});
 
 app.get("/users", (req, res) => {
     User.find()
